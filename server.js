@@ -32,14 +32,7 @@ app.post('/api/notes', (req, res) => {
       console.error(err)
       return
     }
-    let newNote = data.push(req.body)
-    fs.writeFile('db/db.json', JSON.stringify(newNote), (err) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      res.json(newNote)
-    })
+    console.log (data)
   })
 })
 
