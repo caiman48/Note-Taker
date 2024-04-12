@@ -29,13 +29,26 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
   fs.readFile('db/db.json', 'utf8', (err, data) => {
     if (err) {
-      console.error(err)
-      return
+      console.error(err);
+      return res.status(500).send ('Error reading note data')
     }
-    console.log (data)
-  })
-})
+      try {
+        const notes = JSON.parse(data)
+        notes.push(req.body)
 
+        fs.writeFile('db/db.json', JSON.stringify(notes), (err) => {
+          if (err) {
+            console.error(err)
+            return res.status(500).send('Error saving note')
+          }
+          res.json(req.body)
+        });
+      } catch (jsonError) {
+        console.error(jsonError)
+        return res.status(500).send('Error parsing JSON')
+      }
+    }
+  )
 
 // GET Route for homepage
 app.get('/', (req, res) =>
